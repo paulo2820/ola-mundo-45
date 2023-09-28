@@ -1,6 +1,6 @@
 
 - name: Atualização de Segurança do Sistema Linux
-  hosts: linux_servers
+  hosts: all
   become: yes
   tasks:
     - name: Atualizar lista de pacotes
