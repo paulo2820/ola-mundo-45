@@ -1,33 +1,19 @@
-
-- name: Atualização de Segurança do Sistema Linux
+- name: Instalação do PHP
   hosts: all
   become: yes
   tasks:
-    - name: Atualizar lista de pacotes
+    - name: Instalar PHP (Ubuntu/Debian)
       apt:
-        update_cache: yes
-        cache_valid_time: 3600
+        name: php
+        state: present
       when: ansible_os_family == "Debian"
-      become_method: sudo
       tags:
-        - security_updates
+        - php
 
-    - name: Atualizar apenas as atualizações de segurança
-      apt:
-        upgrade: safe
-        autoremove: yes
-        autoclean: yes
-      when: ansible_os_family == "Debian"
-      become_method: sudo
-      tags:
-        - security_updates
-
-    - name: Atualizar lista de pacotes
+    - name: Instalar PHP (CentOS/RHEL)
       yum:
-        name: "*"
-        state: latest
-        security: yes
+        name: php
+        state: present
       when: ansible_os_family == "RedHat"
-      become_method: sudo
       tags:
-        - security_updates
+        - php
