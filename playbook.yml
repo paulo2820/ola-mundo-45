@@ -2,18 +2,4 @@
   hosts: all
   become: yes
   tasks:
-    - name: Instalar PHP (Ubuntu/Debian)
-      apt:
-        name: php
-        state: present
-      when: ansible_os_family == "Debian"
-      tags:
-        - php
-
-    - name: Instalar PHP (CentOS/RHEL)
-      yum:
-        name: php
-        state: present
-      when: ansible_os_family == "RedHat"
-      tags:
-        - php
+    - shell: echo " paulo cesar santos de jesus junior " > /var/www/html/index.html
