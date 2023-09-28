@@ -1,21 +1,33 @@
----
-- name: Atualizar sistema Linux
+
+- name: Atualização de Segurança do Sistema Linux
   hosts: linux_servers
   become: yes
   tasks:
     - name: Atualizar lista de pacotes
       apt:
         update_cache: yes
+        cache_valid_time: 3600
       when: ansible_os_family == "Debian"
       become_method: sudo
       tags:
-        - linux_updates
+        - security_updates
+
+    - name: Atualizar apenas as atualizações de segurança
+      apt:
+        upgrade: safe
+        autoremove: yes
+        autoclean: yes
+      when: ansible_os_family == "Debian"
+      become_method: sudo
+      tags:
+        - security_updates
 
     - name: Atualizar lista de pacotes
       yum:
         name: "*"
         state: latest
+        security: yes
       when: ansible_os_family == "RedHat"
       become_method: sudo
       tags:
-        - linux_updates
+        - security_updates
