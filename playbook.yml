@@ -1,11 +1,12 @@
-- name: Instalação
-  hosts: all
-  become: yes
+---
+- hosts: all
   tasks:
+    - name: Instalação
       apt: 
-      name: "({ item })"
-      state: latest
-     with_items:
+        name: "({ item })"
+        state: latest
+      become: yes
+      with_items:
         - git
-        -  mysql-client
+        - mysql-client
         - composer
