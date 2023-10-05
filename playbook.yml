@@ -1,11 +1,15 @@
 ---
-- hosts: all
+- name: Atualização do Oracle Linux
+  hosts: all
+  become: yes  # Torna-se superusuário (sudo)
+
   tasks:
-    - name: Instalação
-      yum: 
-        name: "{{ item }}"
+    - name: Atualizar lista de pacotes
+      yum:
+        name: '*'
         state: latest
       become: yes
-      with_items:
-        - htop
-       
+
+    - name: Executar atualização do sistema
+      command: yum update -y
+      become: yes
