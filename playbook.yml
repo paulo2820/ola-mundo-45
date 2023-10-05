@@ -2,7 +2,7 @@
 - hosts: all
   tasks:
     - name: Instalação
-      apt: 
+      yum: 
         name: "{{ item }}"
         state: latest
       become: yes
