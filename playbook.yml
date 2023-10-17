@@ -1,15 +1,16 @@
 ---
-- name: Atualização do Oracle Linux
+- name: Atualizar Pacotes com apt
   hosts: all
-  become: yes  # Torna-se superusuário (sudo)
+  become: yes  # Isso permite executar as tarefas com privilégios de superusuário
 
   tasks:
-    - name: Atualizar lista de pacotes
-      yum:
-        name: '*'
-        state: latest
-      become: yes
+    - name: Atualizar o cache do APT
+      apt:
+        update_cache: yes
+      when: ansible_os_family == "Debian"  # Executar somente em sistemas Debian
 
-    - name: Executar atualização do sistema
-      command: yum update -y
-      become: yes
+    - name: Atualizar todos os pacotes
+      apt:
+        upgrade: dist
+      when: ansible_os_family == "Debian"  # Executar somente em sistemas Debian
+           {{ task_result | to_nice_json }}
