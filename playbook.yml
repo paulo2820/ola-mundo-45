@@ -13,4 +13,4 @@
       apt:
         upgrade: dist
       when: ansible_os_family == "Debian"  # Executar somente em sistemas Debian
-           {{ task_result | to_nice_json }}
+          
