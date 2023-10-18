@@ -29,4 +29,5 @@
           - htop
           - zip
           - samba
+          - apache2
         state: present  # Para garantir que os pacotes estejam instalados
