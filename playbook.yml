@@ -13,4 +13,11 @@
       apt:
         upgrade: dist
       when: ansible_os_family == "Debian"  # Executar somente em sistemas Debian
-          
+      tasks:
+    - name: Instalar pacotes
+      package:
+        name: 
+          - pacote1
+          - pacote2
+        state: present     
+
