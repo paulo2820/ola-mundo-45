@@ -15,3 +15,18 @@
       file:
         path: /var/www/html/
         mode: '0777'
+        
+  tasks:
+    - name: Atualizar informações sobre pacotes
+      apt:
+        update_cache: yes
+      when: ansible_os_family == 'Debian'  # Para sistemas Debian/Ubuntu
+
+    - name: Instalar pacotes
+      package:
+        name: 
+          - vim
+          - htop
+          - zip
+          - samba
+        state: present  # Para garantir que os pacotes estejam instalados
