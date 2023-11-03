@@ -1,0 +1,9 @@
+--- 
+- name: instalando apache
+  hosts: all
+  become: yes
+  tasks:
+    - name: instalando apache2 
+      yum:
+      name: httpd
+      state: latests
