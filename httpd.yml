@@ -5,6 +5,6 @@
   tasks:
     - name: instalando apache2 
       yum:
-      name: httpd
-      state: latests
-      
+        name: httpd
+        state: latests
+        shell: systemctl restart httpd
