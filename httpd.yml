@@ -1,9 +1,41 @@
---- 
-- name: instalando apache
+---
+- name: Instalar o Apache
   hosts: all
-  become: yes
+  become: yes  # Tornar-se superusuário para instalar pacotes
+
   tasks:
-    - name: instalando apache2 
+    - name: Instalar o Apache no Debian
+      apt:
+        name: apache2
+        state: present
+      when: "ansible_os_family == 'Debian'"
+
+    - name: Instalar o Apache no Red Hat
       yum:
         name: httpd
+        state: present
+      when: "ansible_os_family == 'RedHat'"
+
+    - name: Iniciar o serviço Apache
+      service:
+        name: apache2
         state: started
+      when: "ansible_os_family == 'Debian'"
+
+    - name: Iniciar o serviço Apache
+      service:
+        name: httpd
+        state: started
+      when: "ansible_os_family == 'RedHat'"
+
+    - name: Habilitar o Apache na inicialização
+      service:
+        name: apache2
+        enabled: yes
+      when: "ansible_os_family == 'Debian'"
+
+    - name: Habilitar o Apache na inicialização
+      service:
+        name: httpd
+        enabled: yes
+      when: "ansible_os_family == 'RedHat'"
