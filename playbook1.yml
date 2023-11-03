@@ -1,33 +1,28 @@
-- hosts: all
-- name: Install Apache Web Server
+---
+- name: Aplicar patches em sistemas Debian
   hosts: all
   become: yes
   tasks:
-    - name: Update APT cache
+    - name: Atualizar repositórios
       apt:
         update_cache: yes
 
-    - name: Install apache2
+    - name: Atualizar pacotes
       apt:
-        name: apache2
-        state: present
-    - name: Ensure myfile.txt has 755 permissions
-      file:
-        path: /var/www/html/
-        mode: '0777'
-        
-  tasks:
-    - name: Atualizar informações sobre pacotes
-      apt:
+        upgrade: dist
         update_cache: yes
-      when: ansible_os_family == 'Debian'  # Para sistemas Debian/Ubuntu
+      register: upgrade_result
 
-    - name: Instalar pacotes
-      package:
-        name: 
-          - vim
-          - htop
-          - zip
-          - samba
-          - apache2
-        state: present  # Para garantir que os pacotes estejam instalados
+    - name: Verificar se é necessário reiniciar
+      command: needs-restarting -r
+      ignore_errors: yes
+      register: restart_check
+
+    - name: Reiniciar se necessário
+      command: reboot
+      async: 1
+      poll: 0
+      ignore_errors: yes
+      when: restart_check.rc == 0
+
+
