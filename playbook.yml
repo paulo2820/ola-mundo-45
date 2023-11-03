@@ -1,23 +1,23 @@
 ---
-- name: Atualizar Pacotes com apt
+- name: Aplicar patches em sistemas Red Hat
   hosts: all
-  become: yes  # Isso permite executar as tarefas com privilégios de superusuário
-
+  become: yes
   tasks:
-    - name: Atualizar o cache do APT
-      apt:
-        update_cache: yes
-      when: ansible_os_family == "Debian"  # Executar somente em sistemas Debian
+    - name: Atualizar repositórios
+      yum:
+        name: '*'
+        state: latest
 
-    - name: Atualizar todos os pacotes
-      apt:
-        upgrade: dist
-      when: ansible_os_family == "Debian"  # Executar somente em sistemas Debian
-      tasks:
-    - name: Instalar pacotes
-      package:
-        name: 
-          - pacote1
-          - pacote2
-        state: present     
+    - name: Verificar se é necessário reiniciar
+      command: needs-restarting -r
+      ignore_errors: yes
+      register: restart_check
 
+    - name: Reiniciar se necessário
+      command: reboot
+      async: 1
+      poll: 0
+      ignore_errors: yes
+      when: restart_check.rc == 0
+
+    
