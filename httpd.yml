@@ -7,4 +7,4 @@
       yum:
       name: httpd
       state: latests
-      shell: systemctl restart httpd
+      
