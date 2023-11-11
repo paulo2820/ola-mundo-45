@@ -1,0 +1,88 @@
+---
+- name: Install Zabbix Server
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+      when: ansible_os_family == 'Debian'
+
+    - name: Install dependencies
+      package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - apache2
+        - php
+        - php-mysql
+        - php-bcmath
+        - php-mbstring
+        - php-gd
+        - php-xml
+        - mysql-server
+        - mysql-client
+      when: ansible_os_family == 'Debian'
+
+    - name: Install Zabbix repository GPG key
+      apt_key:
+        url: https://repo.zabbix.com/zabbix-official-repo.key
+      when: ansible_os_family == 'Debian'
+
+    - name: Add Zabbix repository
+      apt_repository:
+        repo: 'deb https://repo.zabbix.com/zabbix/5.4/debian {{ ansible_distribution_release }} main'
+        state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: Install Zabbix server and frontend
+      package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - zabbix-server-mysql
+        - zabbix-frontend-php
+        - zabbix-apache-conf
+        - zabbix-sql-scripts
+      when: ansible_os_family == 'Debian'
+
+    - name: Configure MySQL for Zabbix
+      mysql_db:
+        name: zabbix
+        state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: Import initial schema and data for Zabbix
+      mysql_db:
+        name: zabbix
+        state: import
+        target: /usr/share/doc/zabbix-sql-scripts/create.sql.gz
+      when: ansible_os_family == 'Debian'
+
+    - name: Configure Zabbix server
+      template:
+        src: zabbix_server.conf.j2
+        dest: /etc/zabbix/zabbix_server.conf
+      notify:
+        - restart zabbix server
+      when: ansible_os_family == 'Debian'
+
+    - name: Set up Apache for Zabbix
+      template:
+        src: apache2.conf.j2
+        dest: /etc/apache2/sites-available/000-default.conf
+      notify:
+        - restart apache2
+      when: ansible_os_family == 'Debian'
+
+  handlers:
+    - name: restart apache2
+      service:
+        name: apache2
+        state: restarted
+
+    - name: restart zabbix server
+      service:
+        name: zabbix-server
+        state: restarted
