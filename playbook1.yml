@@ -68,6 +68,7 @@
 - name: 'instalando pacotes Zabbix'
   hosts: 54.80.171.214
   become: yes
+  tasks:
     - name: 'instalar pacotes zabbix'
       apt:
         name: "{{ item }}"
