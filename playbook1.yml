@@ -34,24 +34,6 @@
         name: mysql-server
         state: latest
 
-    - name: 'Cria o banco do MySQL'
-      mysql_db:
-        name: zabbix
-        login_user: root
-        state: present
-
-    - name: 'Cria o usuário do MySQL'
-      mysql_user:
-        login_user: root
-        name: zabbix
-        password: zabbix
-        priv: 'zabbix*:ALL'
-        state: present
-        hosts: "{{ item }}"
-      witch_items:
-        - 'localhost'
-        - '127.0.0.1'
-        - '54.80.171.214'
 
         
 
