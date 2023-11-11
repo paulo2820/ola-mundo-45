@@ -49,7 +49,7 @@
 
     - name: Configure MySQL for Zabbix
       mysql_db:
-        name: zabbix
+        name: root
         state: present
       when: ansible_os_family == 'Debian'
 
