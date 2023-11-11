@@ -25,10 +25,10 @@
       ignore_errors: yes
       when: restart_check.rc == 0
 
- - name: 'instalando mysql-server'
-   hosts: 54.92.138.103
-   become: yes
-   tasks:
+- name: 'instalando mysqlserver'
+  hosts: 54.92.138.103
+  become: yes
+  tasks:
     - name: 'instalar mysql'
       apt:
         name: mysql-server
@@ -55,10 +55,10 @@
 
         
 
- - name: 'instalando Zabbix'
-   hosts: 54.80.171.214
-   become: yes
-   tasks:
+- name: 'instalando Zabbix'
+  hosts: 54.80.171.214
+  become: yes
+  tasks:
     - name: 'instalar pacotes zabbix'
       
     - name: 'x'
