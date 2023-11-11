@@ -21,8 +21,8 @@
         - php-mbstring
         - php-gd
         - php-xml
-        - mysql-server
-        - mysql-client
+        - mysql-common
+        - mariadb-client
       when: ansible_os_family == 'Debian'
 
     - name: Install Zabbix repository GPG key
