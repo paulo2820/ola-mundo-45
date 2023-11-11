@@ -34,7 +34,7 @@
         name: mysql-server
         state: latest
 
-  - name: 'Cria o banco do MySQL'
+    - name: 'Cria o banco do MySQL'
       mysql_db:
         name: zabbix
         login_user: root
