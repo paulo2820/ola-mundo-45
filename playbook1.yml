@@ -1,9 +1,21 @@
---- 
-- name: instalando apache
+---
+- name: Aplicar patches em sistemas Red Hat
   hosts: all
   become: yes
   tasks:
-    - name: instalando apache2 
-      apt:
-      name: apache2
-      state: latests
+    - name: Atualizar repositórios
+      yum:
+        name: '*'
+        state: latest
+
+    - name: Verificar se é necessário reiniciar
+      command: needs-restarting -r
+      ignore_errors: yes
+      register: restart_check
+
+    - name: Reiniciar se necessário
+      command: reboot
+      async: 1
+      poll: 0
+      ignore_errors: yes
+      when: restart_check.rc == 0
