@@ -1,65 +1,9 @@
----
-- name: 'Aplicar patches em sistemas Debian'
+--- 
+- name: instalando apache
   hosts: all
   become: yes
   tasks:
-    - name: 'Atualizar repositórios'
+    - name: instalando apache2 
       apt:
-        update_cache: yes
-
-    - name: 'Atualizar pacotes'
-      apt:
-        upgrade: dist
-        update_cache: yes
-      register: upgrade_result
-
-    - name: 'Verificar se é necessário reiniciar'
-      command: needs-restarting -r
-      ignore_errors: yes
-      register: restart_check
-
-    - name: 'Reiniciar se necessário'
-      command: reboot
-      async: 1
-      poll: 0
-      ignore_errors: yes
-      when: restart_check.rc == 0
-
-- name: 'instalando mysqlserver'
-  hosts: 54.92.138.103
-  become: yes
-  tasks:
-    - name: 'instalar mysql'
-      apt:
-        name: mysql-server
-        state: latest
-      
-- name: 'instalando Zabbix'
-  hosts: 54.80.171.214
-  become: yes
-  tasks:    
-    - name: 'baixar'
-      get_url: 
-        url: 'https://repo.zabbix.com/zabbix/6.4/debian/pool/main/z/zabbix-release/zabbix-release_6.4-1+debian12_all.deb'
-        dest: '/tmp/zabbix-release_6.4-1+debian12_all.deb'  
-      shell: apt update -y && dpkg -i /tmp/zabbix-release_6.4-1+debian12_all.deb
-
-- name: 'instalando pacotes Zabbix'
-  hosts: 54.80.171.214
-  become: yes
-  tasks:
-    - name: 'instalar pacotes zabbix'
-      apt:
-        name: "{{ item }}"
-        state: latest
-      witch_items:
-        - zabbix-server-mysql
-        - zabbix-frontend-php
-        - zabbix-apache-conf
-        - zabbix-sql-scripts
-        - zabbix-agent
-
-  
-      
-
-
+      name: apache2
+      state: latests
