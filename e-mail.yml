@@ -1,0 +1,19 @@
+---
+- name: Enviar e-mail com resultado
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Executar a tarefa e obter resultado
+      command: yum update -y
+      register: resultado_tarefa
+
+    - name: Enviar e-mail com resultado
+      mail:
+        host: "smtp.gmail.com"
+        port: "465"
+        from: "paulocesar20499@gmail.com"
+        to: "plcersar@gmail.com"
+        subject: "Resultado da tarefa"
+        body: "O resultado da tarefa foi: {{ resultado_tarefa.stdout }}"
+      when: resultado_tarefa.rc == 0
