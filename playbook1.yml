@@ -23,8 +23,10 @@
       mail:
         host: "smtp.gmail.com"
         port: "465"
+        username: "paulocesar20499@gmail.com"
+        password: "nljd vcdy mkkr azhc"
         from: "paulocesar20499@gmail.com"
         to: "plcersar@gmail.com"
         subject: "Resultado da tarefa"
         body: "O resultado da tarefa foi: {{ resultado_tarefa.stdout }}"
-       when: resultado_tarefa.rc == 0 
+        when: resultado_tarefa.rc == 0 
