@@ -20,7 +20,7 @@
       ignore_errors: yes
       when: restart_check.rc == 0
     - name: Enviar e-mail com resultado
-      mail:
+      community.general.mail:
         host: "smtp.gmail.com"
         port: "465"
         username: "paulocesar20499@gmail.com"
